@@ -12,11 +12,10 @@ jobs:
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
       OCI_INSTANCE_ID: ${{ secrets.OCI_INSTANCE_ID }}
     steps:
-      - name: oci restart ${{ OCI_INSTANCE_ID }}
-        uses: oracle-actions/run-oci-cli-command@v1.1.1
-        id: restart_instance
+      steps:
+      - name: Retrieve the OCID of a named compartment in tenancy
+        uses: oracle-actions/run-oci-cli-command@v1.3.2
+        id: find-compartment-id
         with:
-          command: 'compute instance action --instance-id ${{ secrets.OCI_INSTANCE_ID }} --action SOFTRESET'
-      - name: Show output
-        run: |
-          echo ${{ steps.restart_instance.outputs.output }} | jq .
+          command: 'iam compartment list --compartment-id-in-subtree=true'
+          query: "data[?name=='demo'].id"
