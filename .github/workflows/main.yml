@@ -1,19 +1,22 @@
 name: jeanphi
 on: push
 jobs:
-  my-instances:
-    name: List the display name and shape of the instances in my compartment
+ my-instances:
+    runs-on: ubuntu-latest
+    name: Restart Instance every 6 day
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
       OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+      OCI_INSTANCE_ID: ${{ secrets.OCI_INSTANCE_ID }}
     steps:
-      - uses: oracle-actions/run-oci-cli-command@v1.3.2
-        id: demo
+      - name: oci restart ${{ OCI_INSTANCE_ID }}
+        uses: oracle-actions/run-oci-cli-command@v1.1.1
+        id: restart_instance
         with:
-          command: 'iam compartment list --compartment-id-in-subtree=true'
-          query: "data[?name=='testing'].id"
+          command: 'compute instance action --instance-id ${{ OCI_INSTANCE_ID }} --action SOFTRESET'
+      - name: Show output
+        run: |
+          echo ${{ steps.restart_instance.outputs.output }} | jq .
