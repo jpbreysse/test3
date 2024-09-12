@@ -1,0 +1,22 @@
+name: jeanphi
+on:
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '**'
+      - '!docs/*'
+  push:
+    branches:
+      - 'develop'
+    paths:
+      - '**'
+
+jobs:
+  test:
+    name: install, build and run snforge tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
