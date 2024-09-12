@@ -2,7 +2,7 @@ name: jeanphi
 on: push
 jobs:
   my-instances:
-    name: name: List the display name and shape of the instances in my compartment
+    name: List the display name and shape of the instances in my compartment
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
