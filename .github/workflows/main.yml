@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: oracle-actions/run-oci-cli-command@v1.3.2
+      - uses: oracle-actions/run-oci-cli-command@v1.1.1
         id: demo
         with:
           command: 'iam compartment list --compartment-id-in-subtree=true'
